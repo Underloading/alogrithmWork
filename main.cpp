@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 const int MAXN = 1e4 + 5;
+const int INF = 0x7fffffff;
 int n, arr[MAXN];
 #define LL long long
 #define mod %
 #include "turing.h"
-#include "recursive.h"
 #include "functionStack.h"
+std::map <int, int> discrete;
 
 using namespace std;
 
@@ -39,26 +40,51 @@ int main() {
     TuringMachine Origin = turing;
     turing.cnt = n + 4;
     turing.print ();
+
+    funcStack OriginStack = FuncStack;
     while (true) {
-        turing = Origin;
-        int findX;
-        cin >> findX;
-        if (findX == -1)
+        cout << "_______________________________________\n";
+        cout << "|                                     |\n";
+        cout << "|  1.Turing Machine Binary Search     |\n";
+        cout << "|                                     |\n";
+        cout << "|  2.Recursive System Binary Search   |\n";
+        cout << "|                                     |\n";
+        cout << "|                                     |\n";
+        cout << "---------------------------------------\n";
+        int x;
+        cin >> x;
+        if (x == 1) {
+            cout << "Turing Machine" << endl;
+            turing = Origin;
+            int findX;
+            cin >> findX;
+            if (findX == -1)
+                break;
+            turing.cnt = n + 5;
+            turing.arr[n + 5] = tuElement (1, findX, "");
+            turing.print ();
+            int findPos = turing.binSearch (findX);
+            if (findPos == -1) {
+                cout << "not found" << endl;
+            } else {
+                cout << "findPos = " << findPos << endl;
+            }
+            cout << "movTot = " << turing.moveTot << endl;
+        } else if (x == 2) {
+            cout << "Recursive System" << endl;
+            int findX;
+            cin >> findX;
+            if (findX == -1)
+                break;
+            FuncStack = OriginStack;
+            int findPos = FuncStack.executeBin (1, n, findX);
+            if (findPos == -1) {
+                cout << "not found!" << endl;
+            } else {
+                cout << "findPos = " << findPos << endl;
+            }
+        } else {
             break;
-        turing.cnt = n + 5;
-        turing.arr[n + 5] = tuElement (1, findX, "");
-        turing.print ();
-        turing.binSearch (findX);
-        cout << "movTot = " << turing.moveTot << endl;
-    }
-    while (true) {
-        int findX;
-        cin >> findX;
-        if (findX == -1)
-            break;
-        int findPos = sys.execute (findX);
-        if (findPos == -1) {
-            cout << "Don't find " << findX << endl;
         }
     }
     return 0;
